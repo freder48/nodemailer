@@ -25,16 +25,15 @@ const store = createStore(
 // tells the saga middleware to use the rootSaga
 // rootSaga contains all of our other sagas
 sagaMiddleware.run(rootSaga);
+
 ReactDOM.render(
   <Provider store={store}>
     <App />
   </Provider>,
-  document.getElementById('react-root'),
+  document.getElementById('root'),
 );
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+
+
 
 
 
