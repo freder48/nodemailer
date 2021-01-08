@@ -56,6 +56,13 @@ class SupportForm extends Component {
         console.log('clicked')
         event.preventDefault();
         this.props.dispatch({ type: 'ADD_SUPPORT', payload: this.state.supportMessage })
+        this.setState({
+            supportMessage: {
+                name: '',
+                email: '',
+                message: '',
+            }
+        })
     }
 
     handleChange = (inputValue, event) => {
