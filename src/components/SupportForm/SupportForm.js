@@ -1,87 +1,137 @@
 import React, { Component } from 'react';
 import './SupportForm.css'
 import { connect } from 'react-redux';
-import { Card, CardActionArea, CardContent, Typography } from '@material-ui/core';
+import { Card, CardActionArea, CardContent, Typography, TextField, Button} from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
 
 const styles = {
-    container: {
-        display: 'flex',
-        width: '100%',
-       
+    button: {
+        backgroundColor: '#fff9e6',
+        justifyContent: 'center',
+        '&:hover': {
+            backgroundColor: 'rgb(69, 109, 109);',
+            color: '#fff9e6'
+        }
     },
-    details: {
-        flex: 1,
-        minHeight: '200px',
+    card: {
+        margin: 'auto',
+        width: '60%',
+        height: '60vh',
+        marginTop: '4em',
+        justifyContent: 'center',
+        backgroundColor: '#7e9a9a',
+        border: '20px solid white'
     },
-  
+    header: {
+        backgroundColor: "#c78b50",
+        margin: "auto",
+        width: "80&",
+        textAlign: "center",
+        padding: "3rem",
+        border: '3px solid #fff9e6',
+        letterSpacing: '5px'
+
+    },
+    textField: {
+        marginTop: '1rem',
+        width: '90%',
+        backgroundColor: '#fff9e6',
+    },
 };
 
 class SupportForm extends Component {
 
     state = {
-        
+
+    supportMessage: {
+        name: '', 
+        email: '', 
+        message: '',
     }
-    handleChange = (inputValue, event) => {
-        let supportForm = {
-            ...this.props.reduxState.support[0], [inputValue]: event.target.value
-        }
-        this.props.dispatch({ type: 'SET_SUPPORT', payload: [supportForm] })
-        console.log('Support is', supportForm);
-    }//end handleChange
+    }
+    
 
     handleSubmit = (event) => {
+        console.log('clicked')
         event.preventDefault();
-        this.props.dispatch({ type: 'ADD_SUPPORT', payload: this.props.reduxState.support[0] })
-        this.props.history.push('/thankYou')
+        this.props.dispatch({ type: 'ADD_SUPPORT', payload: this.state.supportMessage })
     }
 
+    handleChange = (inputValue, event) => {
+        event.preventDefault();
+        this.setState({
+          supportMessage: {
+            ...this.state.supportMessage,
+            [inputValue]: event.target.value
+          }
+        })//end setState
+        console.log(event.target.value);
+        
+
+      }//end handleChange
+
     render() {
-        // same as below
-        // const {
-        //     classes,
-        // }
 
         const { classes } = this.props;
 
         return (
             <div className="support">
-                <Card className="supportFormCard">
+                <Card className={classes.card}>
                     <CardActionArea>
 
                         <CardContent>
-                            <Typography gutterBottom variant="h5" component="h2" className="supportFormHeader">
+                            <Typography gutterBottom variant="h5" component="h2" className={classes.header}>
                                 How can I support you?
                          </Typography>
 
-                            <form onSubmit={this.handleSubmit} className="formContainer">
+                            <form>
 
-                                <label>Name:</label>
-                                <input
+
+                                <TextField
+                                    label="name"
                                     type="text"
+                                    id="filled-required"
+                                    className={classes.textField}
+                                    variant="filled"
                                     name="name"
-                                    value={this.props.reduxState.support.name}
-                                    onChange={(event) => this.handleChange('name', event)} />
+                                    value={this.state.supportMessage.name}
+                                    onChange={(event) => this.handleChange('name', event)} 
+                                />
                                 <br></br>
                                 <br></br>
-                                <label>Email:</label>
-                                <input
+
+                                <TextField
+                                    label="email"
+                                    id="filled-required"
+                                    variant="filled"
+                                    required
+                                    className={classes.textField}
                                     type="text"
                                     name="email"
-                                    value={this.props.reduxState.support.email}
-                                    onChange={(event) => this.handleChange('email', event)} />
+                                    value={this.state.supportMessage.email}
+                                    onChange={(event) => this.handleChange('email', event)} 
+                                />
                                 <br></br>
                                 <br></br>
-                                <label>Message:</label>
-                                <input
+                                <TextField
+                                    label="Message"
+                                    id="filled-required"
+                                    variant="filled"
+                                    required
+                                    className={classes.textField}
                                     type="textarea"
                                     name="Message"
-                                    value={this.props.reduxState.support.description}
-                                    onChange={(event) => this.handleChange('description', event)} />
+                                    value={this.state.supportMessage.message}
+                                    onChange={(event) => this.handleChange('message', event)} 
+                                />
                                 <br></br>
                                 <br></br>
-                                <button>Submit</button>
+                                <Button  
+                                onClick={this.handleSubmit}
+                                className={classes.button}
+                                variant="outlined"
+                                >Submit</Button>
                             </form>
 
                         </CardContent>

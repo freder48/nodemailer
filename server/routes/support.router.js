@@ -5,9 +5,9 @@ const pool = require('../modules/pool');
 //POST support
 router.post('/', (req, res) => {
     const support = req.body;
-    const queryText = `INSERT INTO "support" ("name", "email", "description")
+    const queryText = `INSERT INTO "support" ("name", "email", "message")
                        VALUES ($1, $2, $3);`;
-    pool.query(queryText, [support.name, support.email, support.description])
+    pool.query(queryText, [support.name, support.email, support.message])
       .then(() => { res.sendStatus(201); })
       .catch((err) => {
         console.log('Error completing POST server query', err);

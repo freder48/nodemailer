@@ -1,9 +1,19 @@
 import './App.css';
-
+import SupportForm from '../SupportForm/SupportForm'
+import {BrowserRouter as Router, Switch, Route,} from 'react-router-dom';
 function App() {
   return (
     <div >
-      <h1>Nodemailer</h1>
+  
+      <Router>
+       
+        <Switch>
+         
+          <Route path='/' component={SupportForm}/>
+        
+        </Switch>
+
+      </Router>
     </div>
   );
 }
