@@ -19,16 +19,16 @@ router.post('/', (req, res) => {
             pass: password
         },
         tls: {
-            rejectUnauthorized: false 
+            rejectUnauthorized: false
         }
     });
-    smtpTransport.verify(function(error, success) {
+    smtpTransport.verify(function (error, success) {
         if (error) {
-          console.log(error);
+            console.log(error);
         } else {
-          console.log("Server is ready to take our messages!");
+            console.log("Server is ready to take our messages!");
         }
-      });
+    });
     const mailOptions = {
         from: `${data.email_address}`,
         to: 'kimberly.a.orchard@gmail.com',
@@ -44,33 +44,33 @@ router.post('/', (req, res) => {
                 console.log('Success!');
             }
             smtpTransport.close();
-    });
+
+            const queryText = `INSERT INTO "support" ("name", "email", "message")
+                       VALUES ($1, $2, $3);`;
+            pool.query(queryText, [data.name, data.email, data.message])
+                .then(() => { res.sendStatus(201); })
+                .catch((err) => {
+                    console.log('Error completing POST server query', err);
+                    res.sendStatus(500);
+                });
+
+
+        });
 })
 
 
 
-    
- 
-       
-    // const support = req.body;
-    // const queryText = `INSERT INTO "support" ("name", "email", "message")
-    //                    VALUES ($1, $2, $3);`;
-    // pool.query(queryText, [support.name, support.email, support.message])
-    //   .then(() => { res.sendStatus(201); })
-    //   .catch((err) => {
-    //     console.log('Error completing POST server query', err);
-    //     res.sendStatus(500);
-    //   });
-   
-      
-
-  
 
 
 
-  
-  
-  
+
+
+
+
+
+
+
+
 
 
 
