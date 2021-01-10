@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './SupportForm.css'
 import { connect } from 'react-redux';
-import { Card, CardActionArea, CardContent, Typography, TextField, Button} from '@material-ui/core';
+import { Card, CardActionArea, CardContent, Typography, TextField, Button, FormControlLabel, Checkbox } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
 
@@ -17,7 +17,7 @@ const styles = {
     card: {
         margin: 'auto',
         width: '60%',
-        height: '60vh',
+        height: '100%',
         marginTop: '4em',
         justifyContent: 'center',
         backgroundColor: '#7e9a9a',
@@ -44,23 +44,29 @@ class SupportForm extends Component {
 
     state = {
 
-    supportMessage: {
-        name: '', 
-        email: '', 
-        message: '',
+        supportMessage: {
+            name: '',
+            email: '',
+            subject: '',
+            message: '',
+            checked: false,
+            message_sent: true,
+        }
     }
-    }
-    
 
     handleSubmit = (event) => {
         console.log('clicked')
         event.preventDefault();
         this.props.dispatch({ type: 'ADD_SUPPORT', payload: this.state.supportMessage })
         this.setState({
+
             supportMessage: {
                 name: '',
                 email: '',
+                subject: '',
                 message: '',
+                checked: false,
+                message_sent: true,
             }
         })
     }
@@ -68,15 +74,24 @@ class SupportForm extends Component {
     handleChange = (inputValue, event) => {
         event.preventDefault();
         this.setState({
-          supportMessage: {
-            ...this.state.supportMessage,
-            [inputValue]: event.target.value
-          }
+            supportMessage: {
+                ...this.state.supportMessage,
+                [inputValue]: event.target.value
+            }
         })//end setState
         console.log(event.target.value);
-        
 
-      }//end handleChange
+
+    }//end handleChange
+
+    handleCheck = () => {
+        this.setState({
+            supportMessage: {
+                ...this.state.supportMessage,
+                checked: !this.state.supportMessage.checked
+            }
+        })
+    }
 
     render() {
 
@@ -84,6 +99,7 @@ class SupportForm extends Component {
 
         return (
             <div className="support">
+                {JSON.stringify(this.state.supportMessage)}
                 <Card className={classes.card}>
                     <CardActionArea>
 
@@ -103,7 +119,7 @@ class SupportForm extends Component {
                                     variant="filled"
                                     name="name"
                                     value={this.state.supportMessage.name}
-                                    onChange={(event) => this.handleChange('name', event)} 
+                                    onChange={(event) => this.handleChange('name', event)}
                                 />
                                 <br></br>
                                 <br></br>
@@ -117,27 +133,54 @@ class SupportForm extends Component {
                                     type="text"
                                     name="email"
                                     value={this.state.supportMessage.email}
-                                    onChange={(event) => this.handleChange('email', event)} 
+                                    onChange={(event) => this.handleChange('email', event)}
                                 />
                                 <br></br>
                                 <br></br>
+
                                 <TextField
-                                    label="Message"
+                                    label="subject"
+                                    type="text"
+                                    required
+                                    id="filled-required"
+                                    className={classes.textField}
+                                    variant="filled"
+                                    name="subject"
+                                    value={this.state.supportMessage.subject}
+                                    onChange={(event) => this.handleChange('subject', event)}
+                                />
+                                <br></br>
+                                <br></br>
+
+                                <TextField
+                                    label="message"
                                     id="filled-required"
                                     variant="filled"
                                     required
+                                    multiline
+                                    rows={4}
                                     className={classes.textField}
                                     type="textarea"
                                     name="Message"
                                     value={this.state.supportMessage.message}
-                                    onChange={(event) => this.handleChange('message', event)} 
+                                    onChange={(event) => this.handleChange('message', event)}
                                 />
                                 <br></br>
                                 <br></br>
-                                <Button  
-                                onClick={this.handleSubmit}
-                                className={classes.button}
-                                variant="outlined"
+                                <FormControlLabel
+                                    control={<Checkbox
+                                        checked={this.state.supportMessage.checked}
+                                        onClick={this.handleCheck}
+                                        name="checked" />}
+                                    label="Want Email Updates"
+                                />
+                                <br></br>
+                                <br></br>
+
+                                <Button
+                                    onClick={this.handleSubmit}
+                                    className={classes.button}
+                                    variant="outlined"
                                 >Submit</Button>
                             </form>
 

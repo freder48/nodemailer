@@ -9,6 +9,9 @@ require('dotenv').config();
 router.post('/', (req, res) => {
     console.log('email', req.body);
     const data = req.body;
+
+    if (data.checked){
+
     let password = process.env.password;
     const smtpTransport = nodemailer.createTransport({
         host: 'smtp.gmail.com',
@@ -31,7 +34,7 @@ router.post('/', (req, res) => {
     });
     const mailOptions = {
         from: `${data.email_address}`,
-        to: 'kimberly.a.orchard@gmail.com',
+        to: 'jfredericksen12@gmail.com',
         subject: `${data.subject}`,
         html: `<p>${data.message}</p>
                 <p>Thank you, ${data.name}</p>`
@@ -44,19 +47,31 @@ router.post('/', (req, res) => {
                 console.log('Success!');
             }
             smtpTransport.close();
-
-            const queryText = `INSERT INTO "support" ("name", "email", "message")
-                       VALUES ($1, $2, $3);`;
-            pool.query(queryText, [data.name, data.email, data.message])
+            console.log(data)
+            const queryText = `INSERT INTO "support" ("name", "email", "message", "message_sent")
+                       VALUES ($1, $2, $3, $4);`;
+            pool.query(queryText, [data.name, data.email, data.message, data.message_sent])
                 .then(() => { res.sendStatus(201); })
                 .catch((err) => {
                     console.log('Error completing POST server query', err);
                     res.sendStatus(500);
                 });
-
-
         });
+    } else {
+        const queryText = `INSERT INTO "support" ("name", "email", "message", "message_sent")
+        VALUES ($1, $2, $3, $4);`;
+pool.query(queryText, [data.name, data.email, data.message, data.message_sent])
+ .then(() => { res.sendStatus(201); })
+ .catch((err) => {
+     console.log('Error completing POST server query', err);
+     res.sendStatus(500);
+ });
+    }
+
 })
+
+
+
 
 
 
