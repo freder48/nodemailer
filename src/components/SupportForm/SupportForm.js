@@ -99,17 +99,13 @@ class SupportForm extends Component {
 
         return (
             <div className="support">
-                {JSON.stringify(this.state.supportMessage)}
                 <Card className={classes.card}>
                     <CardActionArea>
-
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="h2" className={classes.header}>
                                 How can I support you?
-                         </Typography>
-
+                           </Typography>
                             <form>
-
 
                                 <TextField
                                     label="name"
@@ -181,7 +177,8 @@ class SupportForm extends Component {
                                     onClick={this.handleSubmit}
                                     className={classes.button}
                                     variant="outlined"
-                                >Submit</Button>
+                                   >Submit
+                                </Button>
                             </form>
 
                         </CardContent>
